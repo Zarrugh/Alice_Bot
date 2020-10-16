@@ -1,0 +1,10 @@
+
+{'text': 'who is Bill Gates', 'intents': [], 'entities': {'wit$wolfram_search_query:wolfram_search_query': [{'id': '6f006c54-cc13-4f68-88fa-44eb633a4fb8', 'name': 'wit$wolfram_search_query', 'role': 'wolfram_search_query', 'start': 0, 'end': 17, 'body': 'who is Bill Gates', 'confidence': 0.9373, 'entities': [], 'suggested': True, 'value': 'who is Bill Gates', 'type': 'value'}]}, 'traits': {}}
+
+
+{'text': 'hello there', 'intents': [], 'entities': {'wit$wolfram_search_query:wolfram_search_query': [{'id': '6f006c54-cc13-4f68-88fa-44eb633a4fb8', 'name': 'wit$wolfram_search_query', 'role': 'wolfram_search_query', 'start': 0, 'end': 11, 'body': 'hello there', 'confidence': 0.928, 'entities': [], 'suggested': True, 'value': 'hello there', 'type': 'value'}]}, 'traits': {'wit$greetings': [{'id': '5900cc2d-41b7-45b2-b21f-b950d3ae3c5c', 'value': 'true', 'confidence': 0.9997}]}}
+
+
+
+{'text': 'please turn on kitchen light', 'intents': [], 'entities': {'object:object': [{'id': '43f1f6f8-4965-4b85-9833-ecd7b06f3d26', 'name': 'object', 'role': 'object', 'start': 23, 'end': 28, 'body': 'light', 'confidence': 0.9544, 'entities': [], 'value': 'light', 'type': 'value'}], 'room:room': [{'id': 'a67a3c2c-28f7-4728-a879-0d43595014bb', 'name': 'room', 'role': 'room', 'start': 15, 'end': 22, 'body': 'kitchen', 'confidence': 0.9102, 'entities': [], 'value': 'kitchen', 'type': 'value'}], 'wit$wolfram_search_query:wolfram_search_query': [{'id': '6f006c54-cc13-4f68-88fa-44eb633a4fb8', 'name': 'wit$wolfram_search_query', 'role': 'wolfram_search_query', 'start': 7, 'end': 11, 'body': 'turn', 'confidence': 0.9351, 'entities': [], 'suggested': True, 'value': 'turn', 'type': 'value'}]}, 'traits': {}}
+

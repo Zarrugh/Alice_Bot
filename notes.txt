@@ -2,3 +2,20 @@ first lets talk about the main steps
 1) the user says the keyword
 2) after that the sys will reply a sentenc to ask the user how can it help
 3) the sys will lestin to what user says then convert it to text pass it to rule based
+
+
+
+
+
+pip install -r requirements.txt
+
+wolframalpha AppID
+
+P9HHPY-GQYKA25LPR
+
+:
+http://api.wolframalpha.com/v2/query?input=pi&appid=XXXX
+
+
+.
+http://api.wolframalpha.com/v2/query?input=pi&appid=XXXX&assumption=*C.pi-_*Movie

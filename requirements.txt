@@ -1,0 +1,10 @@
+snowboy
+
+vlc
+speech_recognition
+
+
+urllib3
+wit
+gtts
+requests
