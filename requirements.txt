@@ -1,9 +1,6 @@
 snowboy
-
-vlc
-speech_recognition
-
-
+python-vlc
+SpeechRecognition
 urllib3
 wit
 gtts
