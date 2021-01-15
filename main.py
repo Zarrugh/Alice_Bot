@@ -16,7 +16,7 @@ import time
 from wit import Wit
 import wolframalpha
 app_id = "P9HHPY-GQYKA25LPR"
-
+offline_detector_state = False
 wolfclient = wolframalpha.Client(app_id)
 
 player = vlc.MediaPlayer("/home/zarrugh/Music/01. Detective Conan Main Theme.flac")
@@ -33,6 +33,7 @@ def play_mp3(path):
     subprocess.Popen(['mpg123', '-q', path]).wait()
 
 def Main_detected_callback():
+    global offline_detector_state
 
     print ("hotword detected")
     label: hotword_detected
@@ -58,7 +59,7 @@ def Main_detected_callback():
             if FilteredResp['intents'][0] == 'greeting' or FilteredResp['intents'][0] == 'Ggreeting' :
                 print("hello ther can i help you?")
             elif FilteredResp['intents'][0] == 'Qgreeting':
-                print("i'm doning will and you?")
+                print("i'm doning well and you?")
             elif FilteredResp['intents'][0] == 'ask_time':
                 Time_detected_callback()
             elif FilteredResp['intents'][0] == 'ask_weather':
@@ -93,21 +94,31 @@ def Main_detected_callback():
             Main_detected_callback()
     else:
         offline_detector.start(detected)
+        offline_detector_state=True
+
 
 
 def Light_On_detected_callback():
+    global offline_detector_state
     LNURL="https://api.thingspeak.com/update?api_key=SI67Y3B0F5VEWTY5&field1=1"
     print("Light_On_detected_callback")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 def Light_Off_detected_callback():
+    global offline_detector_state
     LFURL="https://api.thingspeak.com/update?api_key=SI67Y3B0F5VEWTY5&field1=0"
     print("Light_Off_detected_callback")
-    offline_detector.terminate()
+
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 def Time_detected_callback():
+    global offline_detector_state
     now = datetime.now()
     M=now.strftime("%M")
     H=now.strftime("%H")
@@ -116,10 +127,13 @@ def Time_detected_callback():
         H=int(H)-12
         H="0"+str(H)
     play_mp3("Time/"+str(H)+":"+str(M)+".mp3")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 ##
 def Temp_detected_callback(IntState):
+    global offline_detector_state
     if IntState:
 
         try:
@@ -131,41 +145,61 @@ def Temp_detected_callback(IntState):
             print("Erorr")
     else:
         print("NO internet")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 def Play_Music_detected_callback():
+    global offline_detector_state
     print("Play_Music_detected_callback")
     player.play()
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 def Stop_Music_detected_callback():
+    global offline_detector_state
     print("Stop_Music_detected_callback")
     player.pause()
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 def What_to_say_detected_callback():
+    global offline_detector_state
     print("What_to_say_detected_callback")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 def Weather_detected_callback():
+    global offline_detector_state
     print("Weather_detected_callback")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 
 def Volume_Up_detected_callback():
+    global offline_detector_state
     print("Volume_Up_detected_callback")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 
 def Volume_Down_detected_callback():
+    global offline_detector_state
     print("Volume_Down_detected_callback")
-    offline_detector.terminate()
+    if offline_detector_state :
+        offline_detector.terminate()
+        offline_detector_state=False
     return()
 
 
@@ -190,6 +224,6 @@ detected = [Light_On_detected_callback,Light_Off_detected_callback,Time_detected
 	    Weather_detected_callback,Volume_Up_detected_callback,Volume_Down_detected_callback]
 OfflineHotWord=["pmdl/Turn_The_Light_On.pmdl","pmdl/Turn_Off_The_Light.pmdl","pmdl/WhatsTheTime.pmdl","pmdl/what's_the_temp.pmdl","pmdl/stop_playing_music.pmdl",
                 "pmdl/play_music.pmdl","pmdl/what_can_i_say.pmdl","pmdl/what's_the_weather.pmdl","pmdl/turn_up_the_volume.pmdl","pmdl/turn_down_the_volume.pmdl"]
-Yui_detector = snowboydecoder.HotwordDetector("pmdl/hey_alice.pmdl",sensitivity = 0.5, audio_gain = 1)
+Alice_detector = snowboydecoder.HotwordDetector("pmdl/hey_alice.pmdl",sensitivity = 0.5, audio_gain = 1)
 offline_detector = snowboydecoder.HotwordDetector(OfflineHotWord,sensitivity = 0.5, audio_gain = 1)
-Yui_detector.start(Main_detected_callback)
+Alice_detector.start(Main_detected_callback)
