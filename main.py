@@ -4,7 +4,9 @@ import speech_recognition as sr
 import sys
 import signal
 import GetFromJeson
+import filter
 import send_to_wit
+import TxTV
 import os
 from datetime import datetime
 import subprocess
@@ -16,11 +18,6 @@ import wolframalpha
 app_id = "P9HHPY-GQYKA25LPR"
 
 wolfclient = wolframalpha.Client(app_id)
-
-# "http://api.wolframalpha.com/v2/query?input={}&appid={}".format(req,appid)
-# "http://api.wolframalpha.com/v2/query?input=pi&appid=XXXX&assumption=*C.pi-_*Movie-"
-#"http://api.wolframalpha.com/v2/query?input=weather+chicago&appid=XXXX&includepodid=InstantaneousWeather:WeatherData"
-
 
 player = vlc.MediaPlayer("/home/zarrugh/Music/01. Detective Conan Main Theme.flac")
 
@@ -35,11 +32,12 @@ def play_mp3(path):
     print(path)
     subprocess.Popen(['mpg123', '-q', path]).wait()
 
-
 def Main_detected_callback():
 
     print ("hotword detected")
+    label: hotword_detected
     if internetConState.internet_on():
+        FilteredResp={}
         r = sr.Recognizer()
         with sr.Microphone() as source:
             r.adjust_for_ambient_noise(source)
@@ -49,19 +47,50 @@ def Main_detected_callback():
             try:
                 wit_resp={}
                 WBS= r.recognize_google(audio)
-                print("WBS = " + str(WBS) + "." )
                 print("Audio Recorded Successfully \n ")
                 wit_resp=send_to_wit.send(WBS)
-                if 'entities' in wit_resp:
-                    entities=wit_resp['entities']
-
-                if 'intents' in wit_resp:
-                    entities=wit_resp['intents']
-
+                FilteredResp=filter.filter_resp(wit_resp)
             except Exception as e:
                 print("Error :  " + str(e))
-            print(wit_resp)
-
+            print(FilteredResp)
+        if 'intents' in FilteredResp :
+            print("good")
+            if FilteredResp['intents'][0] == 'greeting' or FilteredResp['intents'][0] == 'Ggreeting' :
+                print("hello ther can i help you?")
+            elif FilteredResp['intents'][0] == 'Qgreeting':
+                print("i'm doning will and you?")
+            elif FilteredResp['intents'][0] == 'ask_time':
+                Time_detected_callback()
+            elif FilteredResp['intents'][0] == 'ask_weather':
+                Weather_detected_callback()
+            elif FilteredResp['intents'][0] == 'asking_for_help':
+                print("how can i help you? you can ask me to open apps or about the forcast ...etc")
+            elif FilteredResp['intents'][0] == 'open_app':
+                if 'entities' in FilteredResp :
+                    print("openning "+FilteredResp['entities'][1])
+                else:
+                    print("please say that again open_app")
+            elif FilteredResp['intents'][0] == 'open_door':
+                if 'entities' in FilteredResp :
+                    print("openning "+FilteredResp['entities'][1])
+                else:
+                    print("please say that again open_door")
+            elif FilteredResp['intents'][0] == 'trun_off':
+                if 'entities' in FilteredResp :
+                    print("openning "+FilteredResp['entities'][1])
+                else:
+                    print("please say that again trun_off")
+            elif FilteredResp['intents'][0] == 'trun_on':
+                if 'entities' in FilteredResp :
+                    print("openning "+FilteredResp['entities'][1])
+                else:
+                    print("please say that again trun_on")
+            elif FilteredResp['intents'][0] == 'who_search' or FilteredResp['intents'][0] == 'wolframalpha':
+                print("wolframalpha")
+        else:
+            TxTV.TXTV()
+            play_mp3('SIDGTCYRP.mp3')
+            Main_detected_callback()
     else:
         offline_detector.start(detected)
 
@@ -148,9 +177,8 @@ def print_time( threadName, delay):
       print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
 
 
-#Start of Code
 try:
-    wit_access_token="SVLQI4SRLNSTWVXJDFA5OQERBPUPHWZK"
+    wit_access_token="AE65KEMFT5PBOQZ6ZDSQJIMUY33L4BQE"
     wit_client = Wit(wit_access_token)
 except Exception as e:
     print("Wit Error :  " + str(e))

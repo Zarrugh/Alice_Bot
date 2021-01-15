@@ -8,7 +8,7 @@ except:
         #pip._internal.main(['install', 'wit'])
     from wit import Wit
 try:
-    wit_access_token="SVLQI4SRLNSTWVXJDFA5OQERBPUPHWZK"
+    wit_access_token="AE65KEMFT5PBOQZ6ZDSQJIMUY33L4BQE"
     wit_client = Wit(wit_access_token)
 except Exception as e:
     print("Wit Error :  " + str(e))
@@ -88,4 +88,4 @@ if __name__=='__main__':
     wit_resp_G=send("hello there")
 
 #sentence.index('g is', 10, -4)
-{'_text': 'hello there', 'entities': {'on_off': [{'confidence': 0.50147241353989, 'value': 'on'}], 'greetings': [{'confidence': 0.99971348047256, 'value': 'true'}], 'reminder': [{'suggested': True, 'confidence': 0.93606001138687, 'value': 'hello there', 'type': 'value'}]}, 'WARNING': 'DEPRECATED', 'msg_id': '1WUNQ3jUYTOo6LG8W'}
+#{'_text': 'hello there', 'entities': {'on_off': [{'confidence': 0.50147241353989, 'value': 'on'}], 'greetings': [{'confidence': 0.99971348047256, 'value': 'true'}], 'reminder': [{'suggested': True, 'confidence': 0.93606001138687, 'value': 'hello there', 'type': 'value'}]}, 'WARNING': 'DEPRECATED', 'msg_id': '1WUNQ3jUYTOo6LG8W'}

@@ -1,10 +1,30 @@
-
 {'text': 'who is Bill Gates', 'intents': [], 'entities': {'wit$wolfram_search_query:wolfram_search_query': [{'id': '6f006c54-cc13-4f68-88fa-44eb633a4fb8', 'name': 'wit$wolfram_search_query', 'role': 'wolfram_search_query', 'start': 0, 'end': 17, 'body': 'who is Bill Gates', 'confidence': 0.9373, 'entities': [], 'suggested': True, 'value': 'who is Bill Gates', 'type': 'value'}]}, 'traits': {}}
 
 
-{'text': 'hello there', 'intents': [], 'entities': {'wit$wolfram_search_query:wolfram_search_query': [{'id': '6f006c54-cc13-4f68-88fa-44eb633a4fb8', 'name': 'wit$wolfram_search_query', 'role': 'wolfram_search_query', 'start': 0, 'end': 11, 'body': 'hello there', 'confidence': 0.928, 'entities': [], 'suggested': True, 'value': 'hello there', 'type': 'value'}]}, 'traits': {'wit$greetings': [{'id': '5900cc2d-41b7-45b2-b21f-b950d3ae3c5c', 'value': 'true', 'confidence': 0.9997}]}}
+{'text': 'turn on the kitchen light', 'intents': [{'id': '2696380533953622', 'name': 'turn_on', 'confidence': 0.9971}], 'entities': {'turn_object:turn_object': [{'id': '930368084130537', 'name': 'turn_object', 'role': 'turn_object', 'start': 20, 'end': 25, 'body': 'light', 'confidence': 0.9959, 'entities': [], 'value': 'light', 'type': 'value'}], 'room:room': [{'id': '579020069332269', 'name': 'room', 'role': 'room', 'start': 12, 'end': 19, 'body': 'kitchen', 'confidence': 0.9844, 'entities': [], 'value': 'kitchen', 'type': 'value'}]}, 'traits': {}}
+
+
+{'text': 'hello there', 'intents': [{'id': '729573394500519', 'name': 'greeting', 'confidence': 0.9836}], 'entities': {}, 'traits': {}}
+
+
+{'text': 'who is Donald Trump', 'intents': [{'id': '286740249327537', 'name': 'who_search', 'confidence': 0.9786}], 'entities': {}, 'traits': {}}
+
+
+resp0={'text': 'turn on kitchen light and turn off bedroom light', 'intents': [{'id': '414973499427813', 'name': 'trun_off', 'confidence': 0.9867}], 
+
+'entities': {'turn_object:turn_object': [{'id': '930368084130537', 'name': 'turn_object', 'role': 'turn_object', 'start': 16, 'end': 21, 'body': 'light', 'confidence': 1, 'entities': [], 'value': 'light', 'type': 'value'}, {'id': '930368084130537', 'name': 'turn_object', 'role': 'turn_object', 'start': 43, 'end': 48, 'body': 'light', 'confidence': 0.9691, 'entities': [], 'value': 'light', 'type': 'value'}], 'room:room': [{'id': '579020069332269', 'name': 'room', 'role': 'room', 'start': 8, 'end': 15, 'body': 'kitchen', 'confidence': 1, 'entities': [], 'value': 'kitchen', 'type': 'value'}, {'id': '579020069332269', 'name': 'room', 'role': 'room', 'start': 35, 'end': 42, 'body': 'bedroom', 'confidence': 0.7977, 'entities': [], 'suggested': True, 'value': 'bedroom', 'type': 'value'}]}, 'traits': {}}
+
+****************************************************************
+{'intents': ['trun_off'], 'entities': ['turn_object', 'light', 'wit$location', 'Leonardo da Vinci']}
+{'intents': ['open_app'], 'entities': ['appTopen', 'spotify']}
+{'intents': ['turn_on'], 'entities': ['turn_object', 'light', 'wit$location', 'bedroom']}
+{'intents': ['open_app'], 'entities': ['turn_object', 'light', 'room', 'kitchen', 'appTopen', 'spotify']}
+{'intents': ['asking_for_help'], 'entities': []}
+{}
+{'intents': ['turn_on'], 'entities': ['turn_object', 'light', 'room', 'kitchen']}
 
 
 
-{'text': 'please turn on kitchen light', 'intents': [], 'entities': {'object:object': [{'id': '43f1f6f8-4965-4b85-9833-ecd7b06f3d26', 'name': 'object', 'role': 'object', 'start': 23, 'end': 28, 'body': 'light', 'confidence': 0.9544, 'entities': [], 'value': 'light', 'type': 'value'}], 'room:room': [{'id': 'a67a3c2c-28f7-4728-a879-0d43595014bb', 'name': 'room', 'role': 'room', 'start': 15, 'end': 22, 'body': 'kitchen', 'confidence': 0.9102, 'entities': [], 'value': 'kitchen', 'type': 'value'}], 'wit$wolfram_search_query:wolfram_search_query': [{'id': '6f006c54-cc13-4f68-88fa-44eb633a4fb8', 'name': 'wit$wolfram_search_query', 'role': 'wolfram_search_query', 'start': 7, 'end': 11, 'body': 'turn', 'confidence': 0.9351, 'entities': [], 'suggested': True, 'value': 'turn', 'type': 'value'}]}, 'traits': {}}
+
+
 
