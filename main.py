@@ -14,10 +14,9 @@ import vlc
 import _thread as thread
 import time
 from wit import Wit
-import wolframalpha
-app_id = "P9HHPY-GQYKA25LPR"
+import GetFWolfranalpha
+import subprocess
 offline_detector_state = False
-wolfclient = wolframalpha.Client(app_id)
 
 player = vlc.MediaPlayer("/home/zarrugh/Music/01. Detective Conan Main Theme.flac")
 
@@ -34,9 +33,7 @@ def play_mp3(path):
 
 def Main_detected_callback():
     global offline_detector_state
-
     print ("hotword detected")
-    label: hotword_detected
     if internetConState.internet_on():
         FilteredResp={}
         r = sr.Recognizer()
@@ -48,18 +45,27 @@ def Main_detected_callback():
             try:
                 wit_resp={}
                 WBS= r.recognize_google(audio)
-                print("Audio Recorded Successfully \n ")
+                print(WBS)
                 wit_resp=send_to_wit.send(WBS)
+                print(wit_resp)
                 FilteredResp=filter.filter_resp(wit_resp)
             except Exception as e:
                 print("Error :  " + str(e))
             print(FilteredResp)
         if 'intents' in FilteredResp :
-            print("good")
+            #print("good")
             if FilteredResp['intents'][0] == 'greeting' or FilteredResp['intents'][0] == 'Ggreeting' :
-                print("hello ther can i help you?")
+                print("hi there can i help you?")
+                print("hello there can i help you?")
+                print("i'm here can i help you?")
+                print("go ahead can i help you?")
+
             elif FilteredResp['intents'][0] == 'Qgreeting':
                 print("i'm doning well and you?")
+                print("")
+                print("?")
+                print("u?")
+
             elif FilteredResp['intents'][0] == 'ask_time':
                 Time_detected_callback()
             elif FilteredResp['intents'][0] == 'ask_weather':
@@ -69,25 +75,34 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'open_app':
                 if 'entities' in FilteredResp :
                     print("openning "+FilteredResp['entities'][1])
+                    try:
+                        subprocess.Popen([FilteredResp['entities'][1]])
+                    except Exception as e:
+                        print("Error: "+str(e))
                 else:
                     print("please say that again open_app")
+
             elif FilteredResp['intents'][0] == 'open_door':
                 if 'entities' in FilteredResp :
                     print("openning "+FilteredResp['entities'][1])
+
                 else:
                     print("please say that again open_door")
-            elif FilteredResp['intents'][0] == 'trun_off':
+            elif FilteredResp['intents'][0] == 'turn_off':
                 if 'entities' in FilteredResp :
-                    print("openning "+FilteredResp['entities'][1])
+                    print("turning off "+FilteredResp['entities'][1])
+
                 else:
-                    print("please say that again trun_off")
-            elif FilteredResp['intents'][0] == 'trun_on':
+                    print("please say that again turn_off")
+            elif FilteredResp['intents'][0] == 'turn_on':
                 if 'entities' in FilteredResp :
-                    print("openning "+FilteredResp['entities'][1])
+                    print("turn_on "+FilteredResp['entities'][1])
+
                 else:
-                    print("please say that again trun_on")
+                    print("please say that again turn_on")
             elif FilteredResp['intents'][0] == 'who_search' or FilteredResp['intents'][0] == 'wolframalpha':
-                print("wolframalpha")
+                WARes=GetFWolfranalpha.geting_from_wolframalpha(WBS)
+                print(WARes)
         else:
             TxTV.TXTV()
             play_mp3('SIDGTCYRP.mp3')
@@ -95,8 +110,6 @@ def Main_detected_callback():
     else:
         offline_detector.start(detected)
         offline_detector_state=True
-
-
 
 def Light_On_detected_callback():
     global offline_detector_state
@@ -126,7 +139,10 @@ def Time_detected_callback():
     if int(H) >12:
         H=int(H)-12
         H="0"+str(H)
-    play_mp3("Time/"+str(H)+":"+str(M)+".mp3")
+    try:
+        play_mp3("Time/"+str(H)+":"+str(M)+".mp3")
+    except Exception as e:
+        print(e)
     if offline_detector_state :
         offline_detector.terminate()
         offline_detector_state=False
@@ -141,8 +157,8 @@ def Temp_detected_callback(IntState):
             temp = geting_from_jurl_TSVer(temp_url)
             tts = gTTS("the temperature is "+ temp +" celsius.")
             tts.save('temp.mp3')
-        except:
-            print("Erorr")
+        except Exception as e:
+            print("Erorr: "+str(e))
     else:
         print("NO internet")
     if offline_detector_state :
@@ -210,15 +226,14 @@ def print_time( threadName, delay):
       count += 1
       print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
 
-
 try:
     wit_access_token="AE65KEMFT5PBOQZ6ZDSQJIMUY33L4BQE"
     wit_client = Wit(wit_access_token)
 except Exception as e:
     print("Wit Error :  " + str(e))
 
-thread.start_new_thread( print_time, ("Thread-1", 59, ) )
-thread.start_new_thread(ubdate_info,())
+#thread.start_new_thread( print_time, ("Thread-1", 59, ) )
+#thread.start_new_thread(ubdate_info,())
 detected = [Light_On_detected_callback,Light_Off_detected_callback,Time_detected_callback,
             Temp_detected_callback,Stop_Music_detected_callback,Play_Music_detected_callback,What_to_say_detected_callback,
 	    Weather_detected_callback,Volume_Up_detected_callback,Volume_Down_detected_callback]
