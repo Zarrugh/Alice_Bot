@@ -10,7 +10,7 @@
 #resp0={'text': 'tell me about Leonardo da Vinci turn off the light off', 'intents': [{'id': '414973499427813', 'name': 'trun_off', 'confidence': 0.9914}], 'entities': {'turn_object:turn_object': [{'id': '930368084130537', 'name': 'turn_object', 'role': 'turn_object', 'start': 45, 'end': 50, 'body': 'light', 'confidence': 1, 'entities': [], 'value': 'light', 'type': 'value'}], 'wit$location:location': [{'id': '3028075573906404', 'name': 'wit$location', 'role': 'location', 'start': 14, 'end': 31, 'body': 'Leonardo da Vinci', 'confidence': 0.8759, 'entities': [], 'suggested': True, 'value': 'Leonardo da Vinci', 'type': 'value'}]}, 'traits': {}}
 def filter_resp(resp0):
     FilteredDic={}
-    if resp0['intents']:
+    if resp0['intents']!={}:
         BestRespCount=0
         conf=0
         count=0
@@ -24,18 +24,22 @@ def filter_resp(resp0):
         FilteredDic['intents']=[resp0['intents'][BestRespCount]['name']]
         #print(FilteredDic)
         ListOfEntities=[]
-        if resp0['entities']:
+        if resp0['entities']!={}:
+            bassconf=False
             #print(resp0['entities'].values())
             for entities in resp0['entities']:
                 #print(entities)
                 for entitie in resp0['entities'][entities]:
                     #print(entitie)
                     if entitie['confidence']>0.75:
+                        bassconf = True
                         if not (entitie['name'] in ListOfEntities and entitie['value'] in ListOfEntities):
                             ListOfEntities.append(entitie['name'])
                             ListOfEntities.append(entitie['value'])
-
-        FilteredDic['entities']=ListOfEntities
+            if bassconf:
+                FilteredDic['entities']=ListOfEntities
+        if resp0['text']:
+            FilteredDic['text']=[resp0['text']]
     return(FilteredDic)
 
 #resp0={'text': 'how many type of a human being right now', 'intents': [], 'entities': {'wit$datetime:datetime': [{'id': '619016245395390', 'name': 'wit$datetime', 'role': 'datetime', 'start': 31, 'end': 40, 'body': 'right now', 'confidence': 0.9611, 'entities': [], 'type': 'value', 'grain': 'second', 'value': '2021-01-08T02:48:33.000-08:00', 'values': [{'type': 'value', 'grain': 'second', 'value': '2021-01-08T02:48:33.000-08:00'}]}]}, 'traits': {}}
