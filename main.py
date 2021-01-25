@@ -1,5 +1,5 @@
 import internetConState
-from snowboy import snowboydecoder
+import gtts
 import speech_recognition as sr
 import sys
 import signal
@@ -8,14 +8,18 @@ import filter
 import send_to_wit
 import TxTV
 import os
-from datetime import datetime
 import subprocess
 import vlc
 import _thread as thread
 import time
-from wit import Wit
 import GetFWolfranalpha
-import subprocess
+import random
+
+from playsound import playsound
+from snowboy import snowboydecoder
+from datetime import datetime
+from wit import Wit
+
 offline_detector_state = False
 
 player = vlc.MediaPlayer("/home/zarrugh/Music/01. Detective Conan Main Theme.flac")
@@ -23,16 +27,12 @@ player = vlc.MediaPlayer("/home/zarrugh/Music/01. Detective Conan Main Theme.fla
 def ubdate_info():
     if internetConState.internet_on():
         print("geting data")
-
     print("Done")
     time.sleep(58)
-
-def play_mp3(path):
-    print(path)
-    subprocess.Popen(['mpg123', '-q', path]).wait()
-
+DGC =0
 def Main_detected_callback():
     global offline_detector_state
+    global DGC
     print ("hotword detected")
     if internetConState.internet_on():
         FilteredResp={}
@@ -53,61 +53,170 @@ def Main_detected_callback():
                 print("Error :  " + str(e))
             print(FilteredResp)
         if 'intents' in FilteredResp :
-            #print("good")
             if FilteredResp['intents'][0] == 'greeting' or FilteredResp['intents'][0] == 'Ggreeting' :
-                print("hi there can i help you?")
-                print("hello there can i help you?")
-                print("i'm here can i help you?")
-                print("go ahead can i help you?")
+                try:
+                    x=random.randrange(1, 4)
+                    playsound("Phasor/G"+str(x)+".mp3")
+                except Exception as e:
+                    TxTV.TXT()
+                    playsound("Phasor/G"+str(x)+".mp3")
+                DGC =0
 
             elif FilteredResp['intents'][0] == 'Qgreeting':
-                print("i'm doning well and you?")
-                print("")
-                print("?")
-                print("u?")
+                try:
+                    x=random.randrange(1, 4)
+                    playsound("Phasor/Q"+str(x)+".mp3")
+                except Exception as e:
+                    TxTV.TXT()
+                    playsound("Phasor/Q"+str(x)+".mp3")
+                DGC =0
 
             elif FilteredResp['intents'][0] == 'ask_time':
                 Time_detected_callback()
+                DGC =0
+
             elif FilteredResp['intents'][0] == 'ask_weather':
-                Weather_detected_callback()
+                WARes=GetFWolfranalpha.geting_from_wolframalpha(WBS)
+                try:
+                    tts = gtts.gTTS(WARes)
+                    tts.save("temp.mp3")
+                    playsound("temp.mp3")
+                except Exception as e:
+                    print("Error :  " + str(e))
+                DGC = 0
+
             elif FilteredResp['intents'][0] == 'asking_for_help':
-                print("how can i help you? you can ask me to open apps or about the forcast ...etc")
+                try:
+                    playsound("Phasor/HCIHY.mp3")
+                except Exception as e:
+                    TxTV.TXT()
+                    playsound("Phasor/HCIHY.mp3")
+                DGC = 0
+
             elif FilteredResp['intents'][0] == 'open_app':
                 if 'entities' in FilteredResp :
-                    print("openning "+FilteredResp['entities'][1])
                     try:
-                        subprocess.Popen([FilteredResp['entities'][1]])
+                        tts = gtts.gTTS("openning "+FilteredResp['entities']['appTopen'])
+                        print("gtts.gTTS(openning +FilteredResp['entities'][1])")
+                        tts.save("temp.mp3")
+                        playsound("temp.mp3")
+                    except Exception as e:
+                        print("Error :  " + str(e))
+                    try:
+                        subprocess.Popen([FilteredResp['entities']['appTopen']])
                     except Exception as e:
                         print("Error: "+str(e))
+                        try:
+                            playsound("Phasor/ICFIAWTN.mp3")
+                        except Exception as e:
+                            TxTV.TXT()
+                            playsound("Phasor/ICFIAWTN.mp3")
+                    DGC =0
                 else:
-                    print("please say that again open_app")
+                    try:
+                        playsound("Phasor/ICFOWATO.mp3")
+                    except Exception as e:
+                        TxTV.TXT()
+                        playsound("Phasor/ICFOWATO.mp3")
+                    DGC =0
 
             elif FilteredResp['intents'][0] == 'open_door':
                 if 'entities' in FilteredResp :
-                    print("openning "+FilteredResp['entities'][1])
-
+                    try:
+                        tts = gtts.gTTS("unlocking "+FilteredResp['entities']['doors'])
+                        tts.save("temp.mp3")
+                        playsound("temp.mp3")
+                    except Exception as e:
+                        print("Error :  " + str(e))
+                    DGC =0
                 else:
-                    print("please say that again open_door")
+                    try:
+                        playsound("Phasor/ICFOWDTUL.mp3")
+                    except Exception as e:
+                        TxTV.TXT()
+                        playsound("Phasor/ICFOWDTUL.mp3")
+                    DGC =0
+
+            elif FilteredResp['intents'][0] == 'close_door':
+                if 'entities' in FilteredResp :
+                    try:
+                        tts = gtts.gTTS("locking "+FilteredResp['entities']['doors'])
+                        tts.save("temp.mp3")
+                        playsound("temp.mp3")
+                    except Exception as e:
+                        print("Error :  " + str(e))
+                    DGC =0
+                else:
+                    try:
+                        playsound("Phasor/ICFOWDTL.mp3")
+                    except Exception as e:
+                        TxTV.TXT()
+                        playsound("Phasor/ICFOWDTL.mp3")
+                    DGC =0
+
             elif FilteredResp['intents'][0] == 'turn_off':
                 if 'entities' in FilteredResp :
-                    print("turning off "+FilteredResp['entities'][1])
-
+                    try:
+                        tts = gtts.gTTS("turning off "+FilteredResp['entities']['turn_object'])
+                        tts.save("temp.mp3")
+                        playsound("temp.mp3")
+                    except Exception as e:
+                        print("Error :  " + str(e))
+                    DGC =0
                 else:
-                    print("please say that again turn_off")
+                    try:
+                        playsound("Phasor/ICFOWOTT.mp3")
+                    except Exception as e:
+                        TxTV.TXT()
+                        playsound("Phasor/ICFOWOTT.mp3")
+                    DGC =0
+
             elif FilteredResp['intents'][0] == 'turn_on':
                 if 'entities' in FilteredResp :
-                    print("turn_on "+FilteredResp['entities'][1])
-
+                    try:
+                        tts = gtts.gTTS("turning on "+FilteredResp['entities']['turn_object'])
+                        tts.save("temp.mp3")
+                        playsound("temp.mp3")
+                    except Exception as e:
+                        print("Error :  " + str(e))
+                    DGC =0
                 else:
-                    print("please say that again turn_on")
+                    try:
+                        playsound("Phasor/ICFOWOTT.mp3")
+                    except Exception as e:
+                        TxTV.TXT()
+                        playsound("Phasor/ICFOWOTT.mp3")
+                    DGC =0
+
             elif FilteredResp['intents'][0] == 'who_search' or FilteredResp['intents'][0] == 'wolframalpha':
                 WARes=GetFWolfranalpha.geting_from_wolframalpha(WBS)
-                print(WARes)
+                print("WARes")
+                try :
+                    tts = gtts.gTTS(WARes)
+                    tts.save("temp.mp3")
+                except Exception as e :
+                    print("error :"+ str(e))
+                playsound("temp.mp3")
+                DGC =0
         else:
-            TxTV.TXTV()
-            play_mp3('SIDGTCYRP.mp3')
-            Main_detected_callback()
+            if DGC < 3:
+                try:
+                    playsound("Phasor/SIDGTCYRP.mp3")
+                except Exception as e:
+                    TxTV.TXT()
+                    playsound("Phasor/SIDGTCYRP.mp3")
+                DGC +=1
+                Main_detected_callback()
+            else:
+                try:
+                    playsound("Phasor/SIDGTCYRP.mp3")   #*/-*/*-56465
+                except Exception as e:
+                    TxTV.TXT()
+                    playsound("Phasor/SIDGTCYRP.mp3")
+                    DGC=0
+
     else:
+        print("offline mode")
         offline_detector.start(detected)
         offline_detector_state=True
 
@@ -140,14 +249,14 @@ def Time_detected_callback():
         H=int(H)-12
         H="0"+str(H)
     try:
-        play_mp3("Time/"+str(H)+":"+str(M)+".mp3")
+        playsound("Time/"+str(H)+":"+str(M)+".mp3")
     except Exception as e:
         print(e)
     if offline_detector_state :
         offline_detector.terminate()
         offline_detector_state=False
     return()
-##
+
 def Temp_detected_callback(IntState):
     global offline_detector_state
     if IntState:
@@ -166,22 +275,26 @@ def Temp_detected_callback(IntState):
         offline_detector_state=False
     return()
 
-def Play_Music_detected_callback():
-    global offline_detector_state
-    print("Play_Music_detected_callback")
-    player.play()
-    if offline_detector_state :
-        offline_detector.terminate()
-        offline_detector_state=False
+def Play_Pause():
+    os.popen('xdotool key XF86AudioPlay')
     return()
 
-def Stop_Music_detected_callback():
-    global offline_detector_state
-    print("Stop_Music_detected_callback")
-    player.pause()
-    if offline_detector_state :
-        offline_detector.terminate()
-        offline_detector_state=False
+def Previous():
+    os.popen('xdotool key XF86AudioPrev')
+    return()
+def Next():
+    os.popen('xdotool key XF86AudioNext')
+    return()
+def volume_down():
+    os.popen('xdotool key XF86AudioLowerVolume')
+    return()
+
+def volume_up():
+    os.popen('xdotool key XF86AudioRaiseVolume')
+    return()
+
+def volume_Mute():
+    os.popen('xdotool key XF86AudioMute')
     return()
 
 def What_to_say_detected_callback():
@@ -235,7 +348,7 @@ except Exception as e:
 #thread.start_new_thread( print_time, ("Thread-1", 59, ) )
 #thread.start_new_thread(ubdate_info,())
 detected = [Light_On_detected_callback,Light_Off_detected_callback,Time_detected_callback,
-            Temp_detected_callback,Stop_Music_detected_callback,Play_Music_detected_callback,What_to_say_detected_callback,
+            Temp_detected_callback,Play_Pause,Next,What_to_say_detected_callback,
 	    Weather_detected_callback,Volume_Up_detected_callback,Volume_Down_detected_callback]
 OfflineHotWord=["pmdl/Turn_The_Light_On.pmdl","pmdl/Turn_Off_The_Light.pmdl","pmdl/WhatsTheTime.pmdl","pmdl/what's_the_temp.pmdl","pmdl/stop_playing_music.pmdl",
                 "pmdl/play_music.pmdl","pmdl/what_can_i_say.pmdl","pmdl/what's_the_weather.pmdl","pmdl/turn_up_the_volume.pmdl","pmdl/turn_down_the_volume.pmdl"]
