@@ -13,9 +13,9 @@ def TXT():
     tts = gtts.gTTS("go ahead can i help you?")
     tts.save("Phasor/G4.mp3")
 #**************************************************************************************************
-    tts = gtts.gTTS("i'm doning well and you?")
+    tts = gtts.gTTS("i'm doing well and you?")
     tts.save("Phasor/Q1.mp3")
-    tts = gtts.gTTS("i'm doning great i hope you too doing great")
+    tts = gtts.gTTS("i'm doing great i hope you too doing great")
     tts.save("Phasor/Q2.mp3")
     tts = gtts.gTTS("i'm waiting for a question from you let me know if i can help you")
     tts.save("Phasor/Q3.mp3")
