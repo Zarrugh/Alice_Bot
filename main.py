@@ -99,7 +99,7 @@ def Main_detected_callback():
                         subprocess.Popen([FilteredResp['entities']['appTopen']])
 			try:
                             tts = gtts.gTTS("openning "+FilteredResp['entities']['appTopen'])
-                            #print("gtts.gTTS(openning +FilteredResp['entities'][1])")
+                            #print("gtts.gTTS(openning +FilteredResp['entities'][1])") 
                             tts.save("temp.mp3")
                             playsound("temp.mp3")
                     	except Exception as e:
