@@ -96,14 +96,14 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'open_app':
                 if 'entities' in FilteredResp :
                     try:
-                        tts = gtts.gTTS("openning "+FilteredResp['entities']['appTopen'])
-                        print("gtts.gTTS(openning +FilteredResp['entities'][1])")
-                        tts.save("temp.mp3")
-                        playsound("temp.mp3")
-                    except Exception as e:
-                        print("Error :  " + str(e))
-                    try:
                         subprocess.Popen([FilteredResp['entities']['appTopen']])
+			try:
+                            tts = gtts.gTTS("openning "+FilteredResp['entities']['appTopen'])
+                            #print("gtts.gTTS(openning +FilteredResp['entities'][1])")
+                            tts.save("temp.mp3")
+                            playsound("temp.mp3")
+                    	except Exception as e:
+                            print("Error :  " + str(e))
                     except Exception as e:
                         print("Error: "+str(e))
                         try:
