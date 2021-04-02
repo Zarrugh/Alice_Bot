@@ -6,7 +6,7 @@ def geting_from_wolframalpha(question):
     answer=""
     res = wolfclient.query(question)
     if res['@success'] == 'false':
-        return('Question cannot be resolved')
+        print('Question cannot be resolved')
     else:
         result = ''
         pod0 = res['pod'][0]

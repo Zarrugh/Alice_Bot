@@ -14,11 +14,12 @@ import _thread as thread
 import time
 import GetFWolfranalpha
 import random
-
+import GTime
 from playsound import playsound
 from snowboy import snowboydecoder
 from datetime import datetime
 from wit import Wit
+import requests as req
 
 offline_detector_state = False
 
@@ -34,6 +35,7 @@ def Main_detected_callback():
     global offline_detector_state
     global DGC
     print ("hotword detected")
+    playsound("Bloop.mp3")
     if internetConState.internet_on():
         FilteredResp={}
         r = sr.Recognizer()
@@ -96,14 +98,14 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'open_app':
                 if 'entities' in FilteredResp :
                     try:
+                        tts = gtts.gTTS("openning "+FilteredResp['entities']['appTopen'])
+                        print("gtts.gTTS(openning +FilteredResp['entities'][1])")
+                        tts.save("temp.mp3")
+                        playsound("temp.mp3")
+                    except Exception as e:
+                        print("Error :  " + str(e))
+                    try:
                         subprocess.Popen([FilteredResp['entities']['appTopen']])
-			try:
-                            tts = gtts.gTTS("openning "+FilteredResp['entities']['appTopen'])
-                            #print("gtts.gTTS(openning +FilteredResp['entities'][1])") 
-                            tts.save("temp.mp3")
-                            playsound("temp.mp3")
-                    	except Exception as e:
-                            print("Error :  " + str(e))
                     except Exception as e:
                         print("Error: "+str(e))
                         try:
@@ -123,6 +125,8 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'open_door':
                 if 'entities' in FilteredResp :
                     try:
+                        LFURL="https://api.thingspeak.com/update?api_key=H5KFBCVJVVE6V0W5&field1=1"
+                        req.get(LFURL)
                         tts = gtts.gTTS("unlocking "+FilteredResp['entities']['doors'])
                         tts.save("temp.mp3")
                         playsound("temp.mp3")
@@ -140,6 +144,8 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'close_door':
                 if 'entities' in FilteredResp :
                     try:
+                        LFURL="https://api.thingspeak.com/update?api_key=H5KFBCVJVVE6V0W5&field1=0"
+                        req.get(LFURL)
                         tts = gtts.gTTS("locking "+FilteredResp['entities']['doors'])
                         tts.save("temp.mp3")
                         playsound("temp.mp3")
@@ -157,9 +163,12 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'turn_off':
                 if 'entities' in FilteredResp :
                     try:
+                        if FilteredResp['entities']['turn_object'] == 'light' :
+                            Light_Off_detected_callback()
                         tts = gtts.gTTS("turning off "+FilteredResp['entities']['turn_object'])
                         tts.save("temp.mp3")
                         playsound("temp.mp3")
+
                     except Exception as e:
                         print("Error :  " + str(e))
                     DGC =0
@@ -174,6 +183,8 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'turn_on':
                 if 'entities' in FilteredResp :
                     try:
+                        if FilteredResp['entities']['turn_object'] == 'light' :
+                            Light_On_detected_callback()
                         tts = gtts.gTTS("turning on "+FilteredResp['entities']['turn_object'])
                         tts.save("temp.mp3")
                         playsound("temp.mp3")
@@ -209,32 +220,38 @@ def Main_detected_callback():
                 Main_detected_callback()
             else:
                 try:
-                    playsound("Phasor/SIDGTCYRP.mp3")   #*/-*/*-56465
+                    playsound("Phasor/STIAEIOSCYTAL.mp3")   #*/-*/*-56465
                 except Exception as e:
                     TxTV.TXT()
-                    playsound("Phasor/SIDGTCYRP.mp3")
+                    playsound("Phasor/STIAEIOSCYTAL.mp3")
                     DGC=0
+        return
 
     else:
         print("offline mode")
-        offline_detector.start(detected)
         offline_detector_state=True
+        offline_detector.start(detected)
+        return
 
 def Light_On_detected_callback():
     global offline_detector_state
-    LNURL="https://api.thingspeak.com/update?api_key=SI67Y3B0F5VEWTY5&field1=1"
+    LNURL="https://api.thingspeak.com/update?api_key=SABK83EYEUU7MH50&field1=1"
+    req.get(LNURL)
     print("Light_On_detected_callback")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
 
 def Light_Off_detected_callback():
     global offline_detector_state
-    LFURL="https://api.thingspeak.com/update?api_key=SI67Y3B0F5VEWTY5&field1=0"
+    LFURL="https://api.thingspeak.com/update?api_key=SABK83EYEUU7MH50&field1=0"
+    req.get(LFURL)
     print("Light_Off_detected_callback")
 
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
@@ -251,8 +268,10 @@ def Time_detected_callback():
     try:
         playsound("Time/"+str(H)+":"+str(M)+".mp3")
     except Exception as e:
-        print(e)
+        GTime.start()
+        playsound("Time/"+str(H)+":"+str(M)+".mp3")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
@@ -271,6 +290,7 @@ def Temp_detected_callback(IntState):
     else:
         print("NO internet")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
@@ -301,6 +321,7 @@ def What_to_say_detected_callback():
     global offline_detector_state
     print("What_to_say_detected_callback")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
@@ -309,6 +330,7 @@ def Weather_detected_callback():
     global offline_detector_state
     print("Weather_detected_callback")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
@@ -318,6 +340,7 @@ def Volume_Up_detected_callback():
     global offline_detector_state
     print("Volume_Up_detected_callback")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
@@ -327,6 +350,7 @@ def Volume_Down_detected_callback():
     global offline_detector_state
     print("Volume_Down_detected_callback")
     if offline_detector_state :
+        print("offline_detector_state")
         offline_detector.terminate()
         offline_detector_state=False
     return()
