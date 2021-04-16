@@ -1,6 +1,6 @@
 import wolframalpha
 req=input(" QUESTION: ")
-app_id="P9HHPY-GQYKA25LPR"
+app_id=""
 wolclient= wolframalpha.Client(app_id)
 #res=wolclient.query(req)
 res = wolclient.query(req)
