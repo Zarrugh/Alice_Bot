@@ -1,7 +1,7 @@
 import wolframalpha
 
 def geting_from_wolframalpha(question):
-    app_id = "P9HHPY-GQYKA25LPR"
+    app_id = ""
     wolfclient = wolframalpha.Client(app_id)
     answer=""
     res = wolfclient.query(question)
