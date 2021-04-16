@@ -134,7 +134,7 @@ def print_time( threadName, delay):
 
 #Start of Code
 try:
-    wit_access_token="SVLQI4SRLNSTWVXJDFA5OQERBPUPHWZK"
+    wit_access_token=""
     wit_client = Wit(wit_access_token)
 except Exception as e:
     print("Wit Error :  " + str(e))
