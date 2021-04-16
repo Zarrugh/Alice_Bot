@@ -28,6 +28,6 @@ def geting_from_jurl_TSVer(jurl):
 
     return round(float(newstex))
 
-#url = "https://api.thingspeak.com/channels/471406/feeds.json?api_key=Y8MWVDT1GWZELA2S&results=1"
+#url = "https://api.thingspeak.com/channels/471406/feeds.json?api_key="+""+"&results=1"
 #x = geting_from_jurl_TSVer(url)
 #print(x)
