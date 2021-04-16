@@ -125,7 +125,7 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'open_door':
                 if 'entities' in FilteredResp :
                     try:
-                        LFURL="https://api.thingspeak.com/update?api_key=H5KFBCVJVVE6V0W5&field1=1"
+                        LFURL="https://api.thingspeak.com/update?api_key="+"api_key"+"&field1=1"
                         req.get(LFURL)
                         tts = gtts.gTTS("unlocking "+FilteredResp['entities']['doors'])
                         tts.save("temp.mp3")
@@ -144,7 +144,7 @@ def Main_detected_callback():
             elif FilteredResp['intents'][0] == 'close_door':
                 if 'entities' in FilteredResp :
                     try:
-                        LFURL="https://api.thingspeak.com/update?api_key=H5KFBCVJVVE6V0W5&field1=0"
+                        LFURL="https://api.thingspeak.com/update?api_key="+"api_key"+"&field1=0"
                         req.get(LFURL)
                         tts = gtts.gTTS("locking "+FilteredResp['entities']['doors'])
                         tts.save("temp.mp3")
@@ -235,7 +235,7 @@ def Main_detected_callback():
 
 def Light_On_detected_callback():
     global offline_detector_state
-    LNURL="https://api.thingspeak.com/update?api_key=SABK83EYEUU7MH50&field1=1"
+    LNURL="https://api.thingspeak.com/update?api_key="+"api_key"+"&field1=1"
     req.get(LNURL)
     print("Light_On_detected_callback")
     if offline_detector_state :
@@ -246,7 +246,7 @@ def Light_On_detected_callback():
 
 def Light_Off_detected_callback():
     global offline_detector_state
-    LFURL="https://api.thingspeak.com/update?api_key=SABK83EYEUU7MH50&field1=0"
+    LFURL="https://api.thingspeak.com/update?api_key="+"api_key"+"&field1=0"
     req.get(LFURL)
     print("Light_Off_detected_callback")
 
@@ -364,7 +364,7 @@ def print_time( threadName, delay):
       print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
 
 try:
-    wit_access_token="AE65KEMFT5PBOQZ6ZDSQJIMUY33L4BQE"
+    wit_access_token=""
     wit_client = Wit(wit_access_token)
 except Exception as e:
     print("Wit Error :  " + str(e))
