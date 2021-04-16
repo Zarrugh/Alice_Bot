@@ -51,13 +51,13 @@ def Main_detected_callback():
         
 
 def Light_On_detected_callback(): 
-    LNURL="https://api.thingspeak.com/update?api_key=SI67Y3B0F5VEWTY5&field1=1"
+    LNURL="https://api.thingspeak.com/update?api_key="+""+"&field1=1"
     print("Light_On_detected_callback")
     offline_detector.terminate()
     return()
 
 def Light_Off_detected_callback(): 
-    LFURL="https://api.thingspeak.com/update?api_key=SI67Y3B0F5VEWTY5&field1=0"
+    LFURL="https://api.thingspeak.com/update?api_key="+""+"&field1=0"
     print("Light_Off_detected_callback")
     offline_detector.terminate()
     return()
