@@ -8,7 +8,7 @@ except:
         #pip._internal.main(['install', 'wit'])
     from wit import Wit
 try:
-    wit_access_token="AE65KEMFT5PBOQZ6ZDSQJIMUY33L4BQE"
+    wit_access_token=""
     wit_client = Wit(wit_access_token)
 except Exception as e:
     print("Wit Error :  " + str(e))
